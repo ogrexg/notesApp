@@ -10,8 +10,9 @@ header {
     font-size: xx-large;
     background-color: slategrey;
     color: white;
-    padding: 10px;
-    padding-left: 100px;
+    padding: 10px 40px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .container {
@@ -26,6 +27,13 @@ h1 {
 
 h2 {
     color: #a9a9a9;
+    margin-bottom: 10px;
+}
+h3 {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    color: #708090;
     margin-bottom: 10px;
 }
 
@@ -60,6 +68,20 @@ input {
     border: none;
     outline: none;
     background-color: #a9a9a9;
+}
+
+.authInput {
+    padding: 10px;
+    font-size: 15px;
+    color: #708090;
+    background-color: aliceblue;
+    width: 167px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+.authInput::placeholder {
+    font-size: 15px;
 }
 
 .filterInput {
@@ -141,3 +163,47 @@ li {
     display: flex;
 }
 
+.btn {
+    color: #ffffff;
+    font-size: xx-large;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: slategrey;
+    border: none;
+}
+
+.btnAuth {
+    font-size: 20px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    border: none;
+    float: right;
+    border-radius: 8px;
+    width: 100px;
+    height: 25px;
+    background-color: aliceblue;
+    color: #708090;
+}
+
+.btnAuth:hover {
+    background-color: #708090; /* Darker shade for contrast */
+    color: aliceblue;           /* Swap text color */
+    cursor: pointer;            /* Show pointer on hover */
+    transform: scale(1.05);     /* Slightly enlarge the button */
+    transition: all 0.3s ease;  /* Smooth transition effect */
+}
+
+
+.btn:hover {
+    color: #da6262;
+}
+
+.modal {
+    background-color: #a9a9a9;
+    width: 200px;
+    height: auto;
+    padding: 20px;
+    border-radius: 20px;
+    margin: 10px;
+    float: right;
+    visibility: hidden;
+    z-index: 10000;
+}

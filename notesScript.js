@@ -7,6 +7,51 @@ let isNoteOpen = false;
 let currentEditingNote = null;
 let notes = JSON.parse(localStorage.getItem('notes')) || [];
 let noteName, noteText;
+const auth = document.getElementById('auth');
+const authBtn = document.getElementById('authBtn');
+const authSend = document.getElementById('authSend');
+const username = document.getElementById('username');
+const password = document.getElementById('password');
+
+
+
+const url = "http://0.0.0.0:8000/v1/auth/login";
+
+async function authSendFunc() {
+    const body = new URLSearchParams({
+    username: username.value,
+    password: password.value
+    });
+
+    try {
+        const response = await fetch(url, {
+            method: "POST", // или 'PUT'
+            body: body, // данные могут быть 'строкой' или {объектом}!
+            headers: {
+            "Content-Type": 'application/x-www-form-urlencoded',
+            },
+        });
+        const json = await response.json();
+
+        if (response.status == 200) {
+            localStorage.setItem('user', JSON.stringify(json));
+            console.log(localStorage.getItem('user')); // <-- ключ 'user'
+        }
+        
+        console.log(response);
+
+    } catch (error) {
+        console.error("Ошибка:", error);
+    }
+}
+
+function toggleAuthModal() {
+    if (auth.style.visibility === 'visible') {
+        auth.style.visibility = 'hidden';
+    } else {
+        auth.style.visibility = 'visible';
+    }
+}
 
 function initializeNoteInputs() {
     const noteInputContainer = document.createElement('div');
@@ -160,6 +205,20 @@ function deleteNote(index) {
 document.addEventListener('DOMContentLoaded', function() {
     initializeNoteInputs();
     displayNotes();
+
+    authBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleAuthModal();
+    });
+
+    document.addEventListener('click', (e) => {
+        if (e.target !== auth && !auth.contains(e.target) && e.target !== authBtn) {
+            auth.style.visibility = 'hidden';
+        }
+    });
+
+    authSend.addEventListener('click', authSendFunc);
+
 
     createNote.addEventListener('click', createNewNote);
 

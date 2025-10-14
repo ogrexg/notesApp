@@ -8,7 +8,20 @@
     <script src="notesScript.js" defer></script>
 </head>
 <body>
-    <header>Notes App</header>
+    <header>
+        <div>
+            Notes App
+        </div>
+        <button id="authBtn" class="btn">
+            Вход
+        </button>
+    </header>
+    <div id="auth" class="modal">
+        <h3>Авторизация</h3>
+        <input id="username" class="authInput" type="text" placeholder="Введите логин">
+        <input id="password" class="authInput" type="text" placeholder="Введите пароль">
+        <button id="authSend" class="btnAuth">Войти</button>
+    </div>
     <div class="container">
         <div class="notes">
             <div class="title-1">
