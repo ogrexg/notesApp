@@ -14,7 +14,6 @@ const username = document.getElementById('username');
 const password = document.getElementById('password');
 
 
-
 const url = "http://0.0.0.0:8000/v1/auth/login";
 
 async function authSendFunc() {
@@ -25,8 +24,8 @@ async function authSendFunc() {
 
     try {
         const response = await fetch(url, {
-            method: "POST", // или 'PUT'
-            body: body, // данные могут быть 'строкой' или {объектом}!
+            method: "POST",
+            body: body,
             headers: {
             "Content-Type": 'application/x-www-form-urlencoded',
             },
@@ -35,10 +34,15 @@ async function authSendFunc() {
 
         if (response.status == 200) {
             localStorage.setItem('user', JSON.stringify(json));
-            console.log(localStorage.getItem('user')); // <-- ключ 'user'
+            console.log(localStorage.getItem('user'));
         }
         
         console.log(response);
+
+        authBtn.textContent = 'Выйти';
+        auth.style.visibility = 'hidden';
+        username.value = '';
+        password.value = '';
 
     } catch (error) {
         console.error("Ошибка:", error);
