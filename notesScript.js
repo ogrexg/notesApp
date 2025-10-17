@@ -14,16 +14,18 @@ const username = document.getElementById('username');
 const password = document.getElementById('password');
 
 
-const url = "http://0.0.0.0:8000/v1/auth/login";
+const loginUrl = "http://0.0.0.0:8000/v1/auth/login";
+const notesUrl = "http://0.0.0.0:8000/v1/notes";
+
 
 async function authSendFunc() {
     const body = new URLSearchParams({
     username: username.value,
-    password: password.value
+    password: password.value,
     });
 
     try {
-        const response = await fetch(url, {
+        const response = await fetch(loginUrl, {
             method: "POST",
             body: body,
             headers: {
@@ -85,6 +87,8 @@ function initializeNoteInputs() {
 
     noteName.addEventListener('input', handleNoteInput);
     noteText.addEventListener('input', handleNoteTextInput);
+
+
 }
 
 function displayNotes(filter = '') {
@@ -156,7 +160,41 @@ function createNewNote() {
     isNoteOpen = true;
 }
 
-function handleNoteInput() {
+async function sendNoteToServer() {
+
+    const huy = JSON.parse(localStorage.getItem("user"));
+    console.log(huy.token_type);
+    console.log(huy.access_token);
+
+    const body = JSON.stringify({
+        name: noteName.value,
+        message: noteText.value
+    });
+
+    try {
+        const response = await fetch(notesUrl, {
+            method: "POST",
+            body: body,
+            headers: {
+            "Content-Type": 'application/json',
+            "Authorization": `Bearer ${huy.access_token}`
+            },
+        });
+        const data = await response.json();
+
+        // if (response.status == 200) {
+        //     localStorage.setItem('user', JSON.stringify(json));
+        //     console.log(localStorage.getItem('user'));
+        // }
+        
+        console.log('Заметка сохранена: ', data);
+
+    } catch (error) {
+        console.error("Ошибка: ", error);
+    }
+}
+
+async function handleNoteInput() {
     const noteTitle = noteName.value.trim();
     const noteTextValue = noteText.value.trim();
 
@@ -165,6 +203,7 @@ function handleNoteInput() {
         notes[index].title = noteTitle;
         notes[index].text = noteTextValue;
         localStorage.setItem('notes', JSON.stringify(notes));
+        await sendNoteToServer();
         currentEditingNote.textContent = noteTitle;
     } else if (noteTitle !== '') {
         const newNote = {
@@ -173,6 +212,7 @@ function handleNoteInput() {
         };
         notes.push(newNote);
         localStorage.setItem('notes', JSON.stringify(notes));
+        await sendNoteToServer();
         displayNotes();
 
         const index = notes.length - 1;
